@@ -1,0 +1,31 @@
+{
+  "env": { "browser": true, "es2021": true, "jest/globals": true },
+  "extends": [
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "airbnb",
+    "prettier",
+    "plugin:import/typescript"
+  ],
+  "globals": { "JSX": true },
+  "ignorePatterns": "*.js",
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": { "jsx": true, "impliedStrict": true },
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": ["jest"],
+  "rules": {
+    "@typescript-eslint/no-use-before-define": ["error"],
+    "import/extensions": [
+      2,
+      "ignorePackages",
+      { "js": "never", "jsx": "never", "ts": "never", "tsx": "never" }
+    ],
+    "import/prefer-default-export": "off",
+    "no-use-before-define": "off",
+    "react/jsx-filename-extension": [2, { "extensions": [".ts", ".tsx"] }],
+    "react/react-in-jsx-scope": "off"
+  }
+}
