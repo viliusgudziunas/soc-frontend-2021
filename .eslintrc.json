@@ -27,5 +27,6 @@
     "no-use-before-define": "off",
     "react/jsx-filename-extension": [2, { "extensions": [".ts", ".tsx"] }],
     "react/react-in-jsx-scope": "off"
-  }
+  },
+  "settings": { "import/resolver": { "typescript": {} } }
 }
