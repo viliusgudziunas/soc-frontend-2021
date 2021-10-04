@@ -4,8 +4,7 @@
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
     "airbnb",
-    "prettier",
-    "plugin:import/typescript"
+    "prettier"
   ],
   "globals": { "JSX": true },
   "ignorePatterns": "*.js",
@@ -17,6 +16,10 @@
   },
   "plugins": ["jest"],
   "rules": {
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
+    ],
     "@typescript-eslint/no-use-before-define": ["error"],
     "import/extensions": [
       2,
@@ -24,6 +27,7 @@
       { "js": "never", "jsx": "never", "ts": "never", "tsx": "never" }
     ],
     "import/prefer-default-export": "off",
+    "no-unused-vars": "off",
     "no-use-before-define": "off",
     "react/jsx-filename-extension": [2, { "extensions": [".ts", ".tsx"] }],
     "react/react-in-jsx-scope": "off"
