@@ -46,7 +46,9 @@ export const ApiService = {
     );
   },
 
-  logout: (authToken: string): Promise<AxiosResponse<LogoutResponseDto>> => {
+  logout: (
+    authToken: string | null
+  ): Promise<AxiosResponse<LogoutResponseDto>> => {
     const endpoint = endpoints.auth.logout;
     const body = {};
     const config: AxiosRequestConfig = {
@@ -62,7 +64,7 @@ export const ApiService = {
 
   addWorkout: (
     data: AddWorkoutModel,
-    authToken: string
+    authToken: string | null
   ): Promise<AxiosResponse<ResponseWithDataDto>> => {
     const endpoint = endpoints.workouts.create;
     const body = data;

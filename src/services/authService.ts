@@ -1,7 +1,7 @@
 import Utils from '@shared/utils';
 
 export const AuthService = {
-  getAuthToken: (): string => localStorage.getItem('authToken') || '',
+  getAuthToken: (): string | null => localStorage.getItem('authToken'),
   clearAuthToken: (): void => localStorage.removeItem('authToken'),
 
   login: (authToken: string | undefined): void => {
