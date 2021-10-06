@@ -1,5 +1,4 @@
-const isProduction = process.env.ENV === 'production';
-const prefix = isProduction ? '/api' : '';
+const prefix = '/api';
 
 export const endpoints = {
   auth: { login: `${prefix}/login`, logout: `${prefix}/logout` },
