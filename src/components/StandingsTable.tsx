@@ -1,24 +1,40 @@
+import { AuthContext } from '@contexts/authContext';
 import { ClassObjectModel } from '@models/com';
+import { ApiService, StandingsResponse } from '@services/apiService';
+import { AuthService } from '@services/authService';
+import { ToastService } from '@services/toastService';
 import Utils from '@shared/utils';
-import { ReactElement } from 'react';
+import { AxiosResponse } from 'axios';
+import { ReactElement, useContext, useEffect, useState } from 'react';
+import { Redirect } from 'react-router';
 
 interface StandingsDto {
-  calories: number;
-  id: number;
+  caloriesBurnt: number;
+  timeSpent: string;
+  userId: number;
   name: string;
-  place: number;
 }
 
-const data: StandingsDto[] = [
-  { id: 1, place: 1, name: 'Vilius', calories: 2500 },
-  { id: 2, place: 2, name: 'Test', calories: 2000 },
-  { id: 3, place: 3, name: 'Titas', calories: 1750 },
-  { id: 4, place: 4, name: 'Marius', calories: 1500 },
-  { id: 5, place: 5, name: 'Belekas', calories: 150 },
-];
-
 export const StandingsTable = (): ReactElement => {
+  const [standings, setStandings] = useState<StandingsDto[]>([]);
+  const { isLoggedIn } = useContext(AuthContext);
   const trClasses: ClassObjectModel = { 'hover:bg-blue-300': true };
+
+  useEffect(() => {
+    const authToken = AuthService.getAuthToken();
+    ApiService.getStandings(authToken)
+      .then((response: AxiosResponse<StandingsResponse>) =>
+        setStandings(response.data.data)
+      )
+      .catch(() => {
+        // TODO: Get error message from backend
+        ToastService.error('An issue has occurred!');
+      });
+  }, []);
+
+  if (!isLoggedIn) {
+    return <Redirect to='/login' />;
+  }
 
   return (
     <table className='m-6 divide-y'>
@@ -26,12 +42,13 @@ export const StandingsTable = (): ReactElement => {
         <tr className='bg-blue-200'>
           <th className='px-8 py-5'>Place</th>
           <th className='px-8 py-5'>Name</th>
-          <th className='px-8 py-5'>Calories</th>
+          <th className='px-8 py-5'>Calories burnt</th>
+          <th className='px-8 py-5'>Time spent</th>
         </tr>
       </thead>
       <tbody className='divide-y'>
-        {data.map((entry: StandingsDto, index: number) => {
-          const { id, place, name, calories } = entry;
+        {standings.map((entry: StandingsDto, index: number) => {
+          const { userId, name, caloriesBurnt, timeSpent } = entry;
 
           const indexIsEven = index % 2 === 0;
           trClasses['bg-white'] = indexIsEven;
@@ -40,10 +57,11 @@ export const StandingsTable = (): ReactElement => {
           const className = Utils.makeClassName(trClasses);
 
           return (
-            <tr className={className} key={id}>
-              <td className='p-8 py-5 text-center'>{place}</td>
+            <tr className={className} key={userId}>
+              <td className='p-8 py-5 text-center'>{index + 1}</td>
               <td className='p-8 py-5'>{name}</td>
-              <td className='p-8 py-5 text-center'>{calories}</td>
+              <td className='p-8 py-5 text-center'>{caloriesBurnt}</td>
+              <td className='p-8 py-5 text-center'>{timeSpent}</td>
             </tr>
           );
         })}

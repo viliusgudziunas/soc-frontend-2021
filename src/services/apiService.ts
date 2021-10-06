@@ -16,9 +16,28 @@ export interface ResponseWithDataDto {
   };
 }
 
+export interface StandingsResponse {
+  status: 'success' | 'fail';
+  data: {
+    // * Success
+    caloriesBurnt: number;
+    timeSpent: string;
+    userId: number;
+    name: string;
+
+    // * Fail
+    fields?: string[];
+    reason?: string;
+  }[];
+}
+
 export interface LogoutResponseDto {
   status: 'success' | 'fail';
   message: string;
+}
+
+export interface Config {
+  headers: { Authorization: string };
 }
 
 export const ApiService = {
@@ -75,6 +94,20 @@ export const ApiService = {
     return axios.post<AddWorkoutModel, AxiosResponse<ResponseWithDataDto>>(
       endpoint,
       body,
+      config
+    );
+  },
+
+  getStandings: (
+    authToken: string | null
+  ): Promise<AxiosResponse<StandingsResponse>> => {
+    const endpoint = endpoints.standings.get;
+    const config: AxiosRequestConfig<Config> = {
+      headers: { Authorization: `Bearer ${authToken}` },
+    };
+
+    return axios.get<Config, AxiosResponse<StandingsResponse>>(
+      endpoint,
       config
     );
   },

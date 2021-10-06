@@ -17,9 +17,9 @@ export const Routes = (): ReactElement => (
     <PrivateRoute path='/logout'>
       <Pages.LogoutPage />
     </PrivateRoute>
-    {/* <PrivateRoute path='/standings'>
-      <StandingsPage />
-    </PrivateRoute> */}
+    <PrivateRoute path='/standings'>
+      <Pages.StandingsPage />
+    </PrivateRoute>
     <Route path='/register'>
       <Pages.RegisterPage />
     </Route>
