@@ -1,14 +1,14 @@
 import { AuthContext } from '@contexts/authContext';
 import { NavbarLink } from '@lib/NavbarLink';
+import logo from '@static/soc-logo_black.png';
 import { ReactElement, useContext } from 'react';
 
 export const Navbar = (): ReactElement => {
   const { isLoggedIn } = useContext(AuthContext);
 
   return (
-    <nav className='flex flex-row border-b-2 bg-white'>
-      {/* // TODO: Add icon here */}
-      {/* <div className='m-6 mr-12'>Icon here</div> */}
+    <nav className='flex flex-row border-b-2 bg-white h-16'>
+      <img src={logo} alt='SOC Logo' className='object-scale-down' />
 
       {isLoggedIn ? (
         <>

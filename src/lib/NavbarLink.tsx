@@ -15,7 +15,7 @@ export const NavbarLink = (props: Props): ReactElement => {
   const [className, setClassName] = useState('');
 
   const classes: ClassObjectModel = {
-    'p-6': true,
+    'p-5': true,
     'hover:bg-gray-300': true,
   };
 

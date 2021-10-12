@@ -9,7 +9,8 @@
       "@pages": ["./pages/index.ts"],
       "@pages/*": ["./pages/*"],
       "@services/*": ["./services/*"],
-      "@shared/*": ["./shared/*"]
+      "@shared/*": ["./shared/*"],
+      "@static/*": ["./static/*"]
     }
   }
 }
