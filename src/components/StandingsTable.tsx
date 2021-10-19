@@ -1,10 +1,11 @@
 import { AuthContext } from '@contexts/authContext';
 import { ClassObjectModel } from '@models/com';
+import { FailedRequestResponse } from '@models/requestsModel';
 import { ApiService, StandingsResponse } from '@services/apiService';
 import { AuthService } from '@services/authService';
 import { ToastService } from '@services/toastService';
 import Utils from '@shared/utils';
-import { AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 import { ReactElement, useContext, useEffect, useState } from 'react';
 import { Redirect } from 'react-router';
 
@@ -17,7 +18,7 @@ interface StandingsDto {
 
 export const StandingsTable = (): ReactElement => {
   const [standings, setStandings] = useState<StandingsDto[]>([]);
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   const trClasses: ClassObjectModel = { 'hover:bg-blue-300': true };
 
   useEffect(() => {
@@ -26,9 +27,18 @@ export const StandingsTable = (): ReactElement => {
       .then((response: AxiosResponse<StandingsResponse>) =>
         setStandings(response.data.data)
       )
-      .catch(() => {
-        // TODO: Get error message from backend
-        ToastService.error('An issue has occurred!');
+      .catch((error: AxiosError) => {
+        const response = error.response as AxiosResponse<FailedRequestResponse>;
+
+        if (response) {
+          if (response.status === 401) {
+            AuthService.clearAuthToken();
+            setIsLoggedIn(false);
+          }
+        }
+
+        const reason = response?.data?.data.reason ?? 'An issue has occurred!';
+        ToastService.error(reason);
       });
   }, []);
 

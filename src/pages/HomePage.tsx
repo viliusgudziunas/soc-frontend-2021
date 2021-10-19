@@ -2,15 +2,17 @@ import { PageContainer } from '@components/containers';
 import { AddWorkoutForm } from '@components/forms';
 import { AuthContext } from '@contexts/authContext';
 import { Header } from '@lib/Header';
+import { FailedRequestResponse } from '@models/requestsModel';
 import { ApiService } from '@services/apiService';
 import { AuthService } from '@services/authService';
 import { ToastService } from '@services/toastService';
 import { AddWorkoutModel } from '@shared/types';
+import { AxiosError, AxiosResponse } from 'axios';
 import { ReactElement, useContext } from 'react';
 import { Redirect } from 'react-router';
 
 export const HomePage = (): ReactElement => {
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   const handleAddWorkout = (data: AddWorkoutModel): void => {
     const authToken = AuthService.getAuthToken();
 
@@ -18,9 +20,18 @@ export const HomePage = (): ReactElement => {
       .then(() => {
         ToastService.success('Workout submitted successfully!');
       })
-      .catch(() => {
-        // TODO: Get error message from backend
-        ToastService.error('An issue has occurred!');
+      .catch((error: AxiosError) => {
+        const response = error.response as AxiosResponse<FailedRequestResponse>;
+
+        if (response) {
+          if (response.status === 401) {
+            AuthService.clearAuthToken();
+            setIsLoggedIn(false);
+          }
+        }
+
+        const reason = response?.data?.data.reason ?? 'An issue has occurred!';
+        ToastService.error(reason);
       });
   };
 
