@@ -5,6 +5,7 @@
       "@components/*": ["./components/*"],
       "@contexts/*": ["./contexts/*"],
       "@lib/*": ["./lib/*"],
+      "@lib/formFields": ["./lib/formFields/index.ts"],
       "@models/*": ["./models/*"],
       "@pages": ["./pages/index.ts"],
       "@pages/*": ["./pages/*"],

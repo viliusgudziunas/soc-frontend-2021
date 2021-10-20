@@ -1,6 +1,7 @@
 import { Button } from '@lib/Button';
-import { TextField } from '@lib/TextField';
+import { DateField, TextField } from '@lib/formFields';
 import { AddWorkoutModel } from '@shared/types';
+import Utils from '@shared/utils';
 import { Form, Formik, FormikHelpers } from 'formik';
 import { ReactElement, useState } from 'react';
 
@@ -12,7 +13,7 @@ const initialFormData: AddWorkoutModel = {
   name: '',
   caloriesBurnt: 0,
   timeSpent: '',
-  workoutDate: '',
+  workoutDate: Utils.getTodaysDate(),
 };
 
 interface FormErrors {
@@ -25,6 +26,8 @@ interface FormErrors {
 export const AddWorkoutForm = (props: Props): ReactElement => {
   const { handleSubmitFormFunc } = props;
   const [submitDisabled, setSubmitDisabled] = useState(true);
+  const minDate = '2021-10-01';
+  const maxDate = '2021-10-31';
 
   const handleValidate = (values: AddWorkoutModel): FormErrors => {
     const errors: FormErrors = {};
@@ -75,11 +78,14 @@ export const AddWorkoutForm = (props: Props): ReactElement => {
           <TextField attribute='timeSpent' required type='time'>
             Time spent
           </TextField>
-          {/* // TODO: Restrict the date to october */}
-          {/* // TODO: Pre-fill with todays date */}
-          <TextField attribute='workoutDate' required type='date'>
+          <DateField
+            attribute='workoutDate'
+            max={maxDate}
+            min={minDate}
+            required
+          >
             Date
-          </TextField>
+          </DateField>
 
           <Button type='submit' disabled={submitDisabled}>
             Submit

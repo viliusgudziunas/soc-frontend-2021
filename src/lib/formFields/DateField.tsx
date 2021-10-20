@@ -1,17 +1,16 @@
 import { ErrorMessage, Field } from 'formik';
 import { ReactElement, useEffect, useState } from 'react';
 
-type InputType = 'text' | 'email' | 'password' | 'number' | 'time' | 'date';
-
 interface Props {
   attribute: string;
   children: string;
+  max?: string;
+  min?: string;
   required?: boolean;
-  type?: InputType;
 }
 
-export const TextField = (props: Props): ReactElement => {
-  const { attribute, children, type, required } = props;
+export const DateField = (props: Props): ReactElement => {
+  const { attribute, children, required, min, max } = props;
 
   const [label, setLabel] = useState(children);
 
@@ -25,15 +24,21 @@ export const TextField = (props: Props): ReactElement => {
     <label htmlFor={attribute} className='mb-4 text-sm font-bold'>
       {label}
       <Field
+        className='mt-1 block rounded shadow leading-tight'
         id={attribute}
+        max={max}
+        min={min}
         name={attribute}
         required={required}
-        type={type}
-        className='mt-1 block rounded shadow leading-tight'
+        type='date'
       />
       <ErrorMessage name={attribute} component='div' className='text-red-500' />
     </label>
   );
 };
 
-TextField.defaultProps = { required: false, type: 'text' } as Partial<Props>;
+DateField.defaultProps = {
+  max: undefined,
+  min: undefined,
+  required: false,
+} as Partial<Props>;
