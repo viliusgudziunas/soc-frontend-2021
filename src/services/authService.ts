@@ -1,17 +1,15 @@
+import { UserDto } from '@shared/types';
 import Utils from '@shared/utils';
+import { LocalStorageService } from './localStorageService';
 
 export const AuthService = {
-  getAuthToken: (): string | null => localStorage.getItem('authToken'),
-  clearAuthToken: (): void => localStorage.removeItem('authToken'),
-
-  login: (authToken: string | undefined): void => {
-    if (authToken) {
-      localStorage.setItem('authToken', authToken);
-    }
+  login: (authToken: string | undefined, user: UserDto | undefined): void => {
+    LocalStorageService.setAuthToken(authToken);
+    LocalStorageService.setUser(user);
   },
 
   isLoggedIn: (): boolean => {
-    const authToken = AuthService.getAuthToken();
+    const authToken = LocalStorageService.getAuthToken();
     return Utils.isSet(authToken);
   },
 };

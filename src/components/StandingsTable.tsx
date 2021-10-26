@@ -2,7 +2,7 @@ import { AuthContext } from '@contexts/authContext';
 import { ClassObjectModel } from '@models/com';
 import { FailedRequestResponse } from '@models/requestsModel';
 import { ApiService, StandingsResponse } from '@services/apiService';
-import { AuthService } from '@services/authService';
+import { LocalStorageService } from '@services/localStorageService';
 import { ToastService } from '@services/toastService';
 import Utils from '@shared/utils';
 import { AxiosError, AxiosResponse } from 'axios';
@@ -22,7 +22,7 @@ export const StandingsTable = (): ReactElement => {
   const trClasses: ClassObjectModel = { 'hover:bg-blue-300': true };
 
   useEffect(() => {
-    const authToken = AuthService.getAuthToken();
+    const authToken = LocalStorageService.getAuthToken();
     ApiService.getStandings(authToken)
       .then((response: AxiosResponse<StandingsResponse>) =>
         setStandings(response.data.data)
@@ -32,7 +32,7 @@ export const StandingsTable = (): ReactElement => {
 
         if (response) {
           if (response.status === 401) {
-            AuthService.clearAuthToken();
+            LocalStorageService.clearAuthToken();
             setIsLoggedIn(false);
           }
         }

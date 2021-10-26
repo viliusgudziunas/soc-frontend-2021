@@ -1,8 +1,9 @@
 export interface UserDto {
-  createdOn: string;
+  createdAt: string;
   email: string;
+  id: number;
   name: string;
-  totalCalories: number;
+  updatedAt: string;
 }
 
 export interface AddWorkoutModel {

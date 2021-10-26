@@ -2,7 +2,7 @@ import { PageContainer } from '@components/containers';
 import { AuthContext } from '@contexts/authContext';
 import { Header } from '@lib/Header';
 import { ApiService } from '@services/apiService';
-import { AuthService } from '@services/authService';
+import { LocalStorageService } from '@services/localStorageService';
 import { ToastService } from '@services/toastService';
 import { ReactElement, useContext, useEffect, useState } from 'react';
 import { Redirect } from 'react-router';
@@ -13,12 +13,12 @@ export const LogoutPage = (): ReactElement => {
 
   const handleLogout = () => {
     setIsLoggedIn(false);
-    AuthService.clearAuthToken();
+    LocalStorageService.clearAuthToken();
     setIsLogoutSuccessful(true);
   };
 
   useEffect(() => {
-    const authToken = AuthService.getAuthToken();
+    const authToken = LocalStorageService.getAuthToken();
     ApiService.logout(authToken)
       .then(() => {
         ToastService.success('Logged out successfully!');

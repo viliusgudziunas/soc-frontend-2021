@@ -4,7 +4,7 @@ import { AuthContext } from '@contexts/authContext';
 import { Header } from '@lib/Header';
 import { FailedRequestResponse } from '@models/requestsModel';
 import { ApiService } from '@services/apiService';
-import { AuthService } from '@services/authService';
+import { LocalStorageService } from '@services/localStorageService';
 import { ToastService } from '@services/toastService';
 import { AddWorkoutModel } from '@shared/types';
 import { AxiosError, AxiosResponse } from 'axios';
@@ -14,7 +14,7 @@ import { Redirect } from 'react-router';
 export const HomePage = (): ReactElement => {
   const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   const handleAddWorkout = (data: AddWorkoutModel): void => {
-    const authToken = AuthService.getAuthToken();
+    const authToken = LocalStorageService.getAuthToken();
 
     ApiService.addWorkout(data, authToken)
       .then(() => {
@@ -25,7 +25,7 @@ export const HomePage = (): ReactElement => {
 
         if (response) {
           if (response.status === 401) {
-            AuthService.clearAuthToken();
+            LocalStorageService.clearAuthToken();
             setIsLoggedIn(false);
           }
         }

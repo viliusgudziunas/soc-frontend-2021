@@ -17,8 +17,8 @@ export const LoginPage = (): ReactElement => {
   const handleLogin = (data: UserLoginModel): void => {
     ApiService.login(data)
       .then((response: AxiosResponse<ResponseWithDataDto>) => {
-        const { authToken } = response.data.data;
-        AuthService.login(authToken);
+        const { authToken, user } = response.data.data;
+        AuthService.login(authToken, user);
         ToastService.success('Logged in successfully!');
         setIsLoggedIn(true);
         setIsSubmitSuccessful(true);
