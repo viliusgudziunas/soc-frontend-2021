@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 
 interface Props {
   name: string;
-  value: string | number;
+  value: string | number | undefined;
 }
 
 export const ProfileStatistic = (props: Props): ReactElement => {
@@ -10,7 +10,7 @@ export const ProfileStatistic = (props: Props): ReactElement => {
 
   return (
     <div>
-      - {name}: <span className='font-bold'>{value}</span>
+      * {name}: <span className='font-bold'>{value}</span>
     </div>
   );
 };

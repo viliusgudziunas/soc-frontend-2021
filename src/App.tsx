@@ -1,11 +1,12 @@
 import { AppContainer } from '@components/containers';
 import { Navbar } from '@components/Navbar';
 import { AuthContext } from '@contexts/authContext';
+import { UserContext } from '@contexts/userContext';
 import { AuthService } from '@services/authService';
 import { LocalStorageService } from '@services/localStorageService';
 import { ToastService } from '@services/toastService';
 import { UserDto } from '@shared/types';
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { Routes } from './Routes';
@@ -24,37 +25,32 @@ const App = (): ReactElement => {
   };
 
   const getLoggedInUser = (): UserDto | null => {
+    if (!isLoggedIn) {
+      return null;
+    }
+
     const user = LocalStorageService.getUser();
     if (!user) {
       logUserOut();
       return null;
     }
-
     return user;
   };
 
-  useEffect((): void => {
-    if (isLoggedIn) {
-      const user = getLoggedInUser();
-      if (!user) {
-        logUserOut();
-        return;
-      }
-
-      LocalStorageService.setUser(user);
-    }
-  }, []);
+  const [user, setUser] = useState<UserDto | null>(getLoggedInUser());
 
   return (
     <div className='font-mono h-screen bg-gray-100 text-gray-700'>
       <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
-        <Router>
-          <Navbar />
-          <AppContainer>
-            <Routes />
-            <ToastContainer />
-          </AppContainer>
-        </Router>
+        <UserContext.Provider value={{ user, setUser }}>
+          <Router>
+            <Navbar />
+            <AppContainer>
+              <Routes />
+              <ToastContainer />
+            </AppContainer>
+          </Router>
+        </UserContext.Provider>
       </AuthContext.Provider>
     </div>
   );

@@ -8,23 +8,21 @@ export const Routes = (): ReactElement => (
     <Route path='/' exact>
       <Pages.HomePage />
     </Route>
-    {/* <Route path='/about'>
-      <AboutPage />
-    </Route> */}
+    {/* <Route path='/about'><AboutPage /></Route> */}
     <Route path='/login'>
       <Pages.LoginPage />
+    </Route>
+    <Route path='/register'>
+      <Pages.RegisterPage />
     </Route>
     <PrivateRoute path='/logout'>
       <Pages.LogoutPage />
     </PrivateRoute>
+    <PrivateRoute path='/users/:id'>
+      <Pages.ProfilePage />
+    </PrivateRoute>
     <PrivateRoute path='/standings'>
       <Pages.StandingsPage />
     </PrivateRoute>
-    <Route path='/register'>
-      <Pages.RegisterPage />
-    </Route>
-    {/* <PrivateRoute path='/profile'>
-      <ProfilePage />
-    </PrivateRoute> */}
   </Switch>
 );

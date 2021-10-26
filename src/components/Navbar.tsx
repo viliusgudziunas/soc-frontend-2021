@@ -1,14 +1,16 @@
 import { AuthContext } from '@contexts/authContext';
+import { UserContext } from '@contexts/userContext';
 import { NavbarLink } from '@lib/NavbarLink';
 import logo from '@static/soc-logo_black.png';
 import { ReactElement, useContext } from 'react';
 
 export const Navbar = (): ReactElement => {
   const { isLoggedIn } = useContext(AuthContext);
+  const { user } = useContext(UserContext);
 
   return (
     <nav className='flex flex-row border-b-2 bg-white h-16'>
-      <img src={logo} alt='SOC Logo' className='object-scale-down' />
+      <img src={logo} alt='SOC logo' className='object-scale-down' />
 
       {isLoggedIn ? (
         <>
@@ -21,12 +23,10 @@ export const Navbar = (): ReactElement => {
 
       {isLoggedIn ? (
         <>
-          {/* <NavbarLink to='/profile' alignDirection='right'>
+          <NavbarLink to={`/users/${user?.id}`} alignDirection='right'>
             Profile
-          </NavbarLink> */}
-          <NavbarLink to='/logout' alignDirection='right'>
-            Logout
           </NavbarLink>
+          <NavbarLink to='/logout'>Logout</NavbarLink>
         </>
       ) : (
         <>
